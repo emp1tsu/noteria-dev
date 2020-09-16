@@ -1,3 +1,15 @@
+require('dotenv').config()
+const {
+  API_KEY,
+  AUTH_DOMAIN,
+  DATABESE_URL,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} = process.env
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -34,7 +46,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['~/plugins/debounce', '~/plugins/firebase'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -67,4 +79,17 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+  router: {
+    middleware: 'authenticated',
+  },
+  env: {
+    API_KEY,
+    AUTH_DOMAIN,
+    DATABESE_URL,
+    PROJECT_ID,
+    STORAGE_BUCKET,
+    MESSAGING_SENDER_ID,
+    APP_ID,
+    MEASUREMENT_ID,
+  },
 }

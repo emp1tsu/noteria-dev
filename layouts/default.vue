@@ -1,55 +1,41 @@
 <template>
-  <div>
+  <div class="flex min-h-screen bg-light-theme-gray">
     <Nuxt />
   </div>
 </template>
 
+<script>
+export default {}
+</script>
+
 <style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+/* .router-link-exact-active {
+  @apply bg-grey-darker;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
+.clickable {
+  -webkit-app-region: no-drag;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+.border-blackblack {
+  border-color: black;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
+::-webkit-scrollbar {
+  background-color: #2b2b2b;
+  border-left: 1px solid #3e3e3e;
+  width: 0.65rem;
 }
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
+::-webkit-scrollbar-thumb {
+  background: #6b6b6b;
+  border-radius: 10px;
 }
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+.discover-banner {
+  background: url('./discover1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 300px;
+} */
 </style>
