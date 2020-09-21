@@ -42,11 +42,15 @@ export default {
    ** Global CSS
    */
   css: [],
+  bodyAttrs: {
+    class: 'h-screen overflow-hidden flex items-center justify-center',
+  },
+
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~/plugins/debounce', '~/plugins/firebase'],
+  plugins: ['~/plugins/debounce', '~/plugins/firebase', '~/plugins/authUser'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

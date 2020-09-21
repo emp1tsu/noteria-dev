@@ -1,24 +1,81 @@
 export const state = () => ({
+  folders: [],
   privateNotes: [],
 })
 
 export const mutations = {
-  LOAD_PRIVATENOTES(state, privateNotes) {
+  loadFolder(state, folders) {
+    state.folders = folders
+  },
+  addFolder(state, folder) {
+    state.folders.push(folder)
+  },
+  updateFolder(state, folder) {
+    const index = state.folders.findIndex((f) => f.id === folder.id)
+    state.folders.splice(index, 1, folder)
+  },
+  removeFolder(state, id) {
+    state.folders = state.folders.filter((f) => f.id !== id)
+  },
+  loadPrivateNotes(state, privateNotes) {
     state.privateNotes = privateNotes
   },
-  ADD_PRIVATENOTE(state, privateNote) {
+  addPrivateNote(state, privateNote) {
     state.privateNotes.push(privateNote)
   },
-  UPDATE_PRIVATENOTE(state, privateNote) {
+  updatePrivateNote(state, privateNote) {
     const index = state.privateNotes.findIndex((n) => n.id === privateNote.id)
     state.privateNotes.splice(index, 1, privateNote)
   },
-  REMOVE_PRIVATENOTE(state, id) {
+  removePrivateNote(state, id) {
     state.privateNotes = state.privateNotes.filter((n) => n.id !== id)
   },
 }
 
 export const actions = {
+  async loadFolder({ commit, rootGetters }) {
+    await this.$firestore
+      .collection('users')
+      .doc(rootGetters.user.uid)
+      .collection('folders')
+      .onSnapshot((serverupdate) => {
+        const folders = serverupdate.docs.map((_doc) => {
+          const data = _doc.data()
+          data.id = _doc.id
+          return data
+        })
+        commit('loadFolder', folders)
+      })
+  },
+  async addFolder({ commit, rootGetters }) {
+    await this.$firestore
+      .collection('users')
+      .doc(rootGetters.user.uid)
+      .collection('folders')
+      .add({
+        name: '無題のフォルダ',
+        updatedAt: this.$firebase.firestore.FieldValue.serverTimestamp(),
+      })
+  },
+  async updateFolder({ commit, rootGetters }, { id, name }) {
+    await this.$firestore
+      .collection('users')
+      .doc(rootGetters.user.uid)
+      .collection('folders')
+      .doc(id)
+      .set({
+        name,
+        updatedAt: this.$firebase.firestore.FieldValue.serverTimestamp(),
+      })
+  },
+  async removeFolder({ commit, rootGetters }, { id }) {
+    await this.$firestore
+      .collection('users')
+      .doc(rootGetters.user.uid)
+      .collection('folders')
+      .doc(id)
+      .delete()
+  },
   loadPrivateNote({ commit }) {
     const privateNotes = [
       {
@@ -40,7 +97,7 @@ export const actions = {
         updatedAt: new Date(),
       },
     ]
-    commit('LOAD_PRIVATENOTES', privateNotes)
+    commit('loadPrivateNotes', privateNotes)
   },
   addPrivateNote({ commit }) {
     const newPrivateNote = {
@@ -49,18 +106,19 @@ export const actions = {
       content: '',
       updatedAt: new Date(),
     }
-    commit('ADD_PRIVATENOTE', newPrivateNote)
+    commit('addPrivateNote', newPrivateNote)
   },
   updatePrivateNote({ commit }, privateNote) {
     privateNote.updatedAt = new Date()
-    commit('UPDATE_PRIVATENOTE', privateNote)
+    commit('updatePrivateNote', privateNote)
   },
   removePrivateNote({ commit }, { id }) {
-    commit('REMOVE_PRIVATENOTE', id)
+    commit('removePrivateNote', id)
   },
 }
 
 export const getters = {
+  folders: (state) => () => state.folders,
   privateNotes: (state) => () => state.privateNotes,
   privateNoteById: (state) => (id) =>
     state.privateNotes.find((privateNote) => privateNote.id === id),
